@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="330.0" prefWidth="494.0" spacing="10.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <children>
+      <Label text="Departamentos">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #fff;">
+        <items>
+          <Button mnemonicParsing="false" style="-fx-background-color: #2196f3;" styleClass="btn" text="Novo" textFill="WHITE">
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" text="Listar Vendedores" textFill="WHITE">
+               <styleClass>
+                  <String fx:value="btn" />
+                  <String fx:value="btn-confirm" />
+               </styleClass>
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
+        </items>
+      </ToolBar>
+      <TableView prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn prefWidth="112.0" text="Nome" />
+          <TableColumn prefWidth="105.0" text="Vendedores" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>
