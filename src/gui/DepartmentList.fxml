@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="330.0" prefWidth="494.0" spacing="10.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="mainVBox" spacing="10.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DepartmentListController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
@@ -22,11 +22,11 @@
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #fff;">
         <items>
-          <Button mnemonicParsing="false" style="-fx-background-color: #2196f3;" styleClass="btn" text="Novo" textFill="WHITE">
+          <Button fx:id="btnNewDepartment" mnemonicParsing="false" onAction="#btnTest" style="-fx-background-color: #2196f3;" styleClass="btn" text="Novo" textFill="WHITE">
                <font>
                   <Font size="13.0" />
                </font></Button>
-            <Button mnemonicParsing="false" text="Listar Vendedores" textFill="WHITE">
+            <Button fx:id="btnListSellers" mnemonicParsing="false" text="Listar Vendedores" textFill="WHITE">
                <styleClass>
                   <String fx:value="btn" />
                   <String fx:value="btn-confirm" />
@@ -36,10 +36,10 @@
                </font></Button>
         </items>
       </ToolBar>
-      <TableView prefHeight="200.0" prefWidth="200.0">
+      <TableView fx:id="tableViewDepartments" VBox.vgrow="ALWAYS">
         <columns>
-          <TableColumn prefWidth="112.0" text="Nome" />
-          <TableColumn prefWidth="105.0" text="Vendedores" />
+          <TableColumn fx:id="tableColumnNome" prefWidth="112.0" text="Nome" />
+          <TableColumn fx:id="tableColumnVendedores" prefWidth="105.0" text="Vendedores" />
         </columns>
       </TableView>
    </children>

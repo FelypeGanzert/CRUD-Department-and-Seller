@@ -22,7 +22,6 @@ public class MainViewController implements Initializable {
 	@FXML VBox paneInfos;
 	
 	public void initialize(URL location, ResourceBundle resources) {
-		
 	}
 	
 	public void onMenuItemSellerAction() {
@@ -50,6 +49,7 @@ public class MainViewController implements Initializable {
 			vBoxMainScene.setStyle(newVBox.getStyle());
 		} catch (IOException e) {
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
 		} catch(IllegalStateException e) {
 			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 			

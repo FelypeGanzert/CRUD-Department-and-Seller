@@ -8,9 +8,9 @@
 
 <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="412.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
    <content>
-      <VBox prefHeight="381.0" prefWidth="587.0">
+      <VBox prefHeight="395.0" prefWidth="587.0">
          <children>
-            <MenuBar>
+            <MenuBar VBox.vgrow="ALWAYS">
               <menus>
                 <Menu mnemonicParsing="false" text="Registro">
                   <items>
@@ -24,7 +24,7 @@
                      </items></Menu>
               </menus>
             </MenuBar>
-            <VBox fx:id="paneInfos" prefHeight="365.0" prefWidth="587.0" style="-fx-background-color: #fff;" />
+            <VBox fx:id="paneInfos" prefHeight="250.0" prefWidth="308.0" style="-fx-background-color: #fff;" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </content>
