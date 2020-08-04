@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.entites.Department;
 import model.services.DepartmentService;
+import model.services.SellerService;
 
 public class DepartmentListController implements Initializable{
 
@@ -27,7 +29,8 @@ public class DepartmentListController implements Initializable{
 	@FXML private TableColumn<Department, String> tableColumnNome;
 	@FXML private TableColumn<Department, Integer> tableColumnVendedores;
 	
-	private DepartmentService service;
+	private DepartmentService departmentService;
+	private SellerService sellerService;
 	private ObservableList<Department> departmentObsList;
 	
 	@Override
@@ -38,22 +41,28 @@ public class DepartmentListController implements Initializable{
 		
 	private void initializeNodes() {
 		tableColumnNome.setCellValueFactory(new PropertyValueFactory<>("name"));
-		tableColumnVendedores.setCellValueFactory(new PropertyValueFactory<>("sellersQuantity"));
-		
+		tableColumnVendedores.setCellValueFactory(cellData -> new SimpleObjectProperty<>(sellerService.	quantityByDepartment(cellData.getValue())));		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewDepartments.prefHeightProperty().bind(stage.heightProperty());
 	}
 	
 
-	public void setDepartmentService(DepartmentService service) {
-		this.service = service;
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+	
+	public void setSellerService(SellerService sellerService) {
+		this.sellerService = sellerService;
 	}
 	
 	public void updateTableView() {
-		if(service == null) {
+		if(departmentService == null) {
 			throw new IllegalStateException("Department service not initialized");
 		}
-		List<Department> list = service.findAdll();
+		if(sellerService == null) {
+			throw new IllegalStateException("Seller service not initialized");
+		}
+		List<Department> list = departmentService.findAdll();
 		departmentObsList = FXCollections.observableArrayList(list);
 		tableViewDepartments.setItems(departmentObsList);
 	}

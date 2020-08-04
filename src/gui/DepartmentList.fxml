@@ -39,7 +39,7 @@
       <TableView fx:id="tableViewDepartments" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="tableColumnNome" prefWidth="112.0" text="Nome" />
-          <TableColumn fx:id="tableColumnVendedores" prefWidth="105.0" text="Vendedores" />
+          <TableColumn fx:id="tableColumnVendedores" prefWidth="105.0" style="-fx-alignment: CENTER_RIGHT;" text="Vendedores" />
         </columns>
       </TableView>
    </children>
