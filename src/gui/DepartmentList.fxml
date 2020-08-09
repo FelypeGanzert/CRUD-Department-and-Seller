@@ -38,8 +38,11 @@
       </ToolBar>
       <TableView fx:id="tableViewDepartments" VBox.vgrow="ALWAYS">
         <columns>
-          <TableColumn fx:id="tableColumnNome" prefWidth="112.0" text="Nome" />
-          <TableColumn fx:id="tableColumnVendedores" prefWidth="105.0" style="-fx-alignment: CENTER_RIGHT;" text="Vendedores" />
+            <TableColumn fx:id="tableColumnId" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" style="-fx-alignment: CENTER_LEFT; -fx-padding: 2px 5px;" text="ID" />
+          <TableColumn fx:id="tableColumnNome" minWidth="30.0" prefWidth="130.0" style="-fx-padding: 2px 5px; -fx-alignment: CENTER_LEFT;" text="Nome" />
+          <TableColumn fx:id="tableColumnVendedores" prefWidth="105.0" style="-fx-alignment: CENTER_RIGHT; -fx-padding: 2px 10px;" text="Vendedores" />
+            <TableColumn fx:id="tableColumnEdit" maxWidth="-1.0" prefWidth="-1.0" resizable="false" style="-fx-alignment: CENTER; -fx-padding: 2px 2px;" />
+            <TableColumn fx:id="tableColumnDelete" maxWidth="-1.0" prefWidth="-1.0" resizable="false" style="-fx-alignment: CENTER; -fx-padding: 2px 2px;" />
         </columns>
       </TableView>
    </children>

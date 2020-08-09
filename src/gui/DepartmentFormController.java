@@ -48,6 +48,9 @@ public class DepartmentFormController implements Initializable {
 
 	public void setDepartmentEntity(Department entity) {
 		this.entity = entity;
+		if(this.entity.getId() != null) {
+			containerId.setVisible(true);
+		}
 	}
 
 	public void setDepartmentService(DepartmentService service) {
@@ -78,7 +81,7 @@ public class DepartmentFormController implements Initializable {
 		return departmentDate;
 	}
 
-	public void handleSaveBtn(ActionEvent event) {
+	public synchronized void handleSaveBtn(ActionEvent event) {
 		if (entity == null) {
 			throw new IllegalStateException("Department is null");
 		}
