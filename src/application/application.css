@@ -24,3 +24,11 @@
 .scroll-pane {
    -fx-background-color: transparent;
 }
+
+.blank-input{
+	-fx-border-style: none;
+	-fx-background-color: #fff;
+	-fx-background-radius: 5px;
+	-fx-padding: 10px 15px;
+	
+}

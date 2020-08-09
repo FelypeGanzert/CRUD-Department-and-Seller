@@ -22,7 +22,7 @@
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #fff;">
         <items>
-          <Button fx:id="btnNewDepartment" mnemonicParsing="false" style="-fx-background-color: #2196f3;" styleClass="btn" text="Novo" textFill="WHITE">
+          <Button fx:id="btnNewDepartment" mnemonicParsing="false" onAction="#handleNewDepartment" style="-fx-background-color: #2196f3;" styleClass="btn" text="Novo" textFill="WHITE">
                <font>
                   <Font size="13.0" />
                </font></Button>
