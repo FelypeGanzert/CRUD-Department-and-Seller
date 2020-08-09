@@ -69,32 +69,15 @@ public class DepartmentListController implements Initializable, DataChangeListen
 	private void initializeNodes() {
 		tableColumnNome.setCellValueFactory(new PropertyValueFactory<>("name"));
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
-		tableColumnVendedores.setCellValueFactory(cellData -> new SimpleObjectProperty<>(sellerService.	quantityByDepartment(cellData.getValue())));		
-		
+		tableColumnVendedores.setCellValueFactory(cellData -> new SimpleObjectProperty<>(sellerService.	quantityByDepartment(cellData.getValue())));
 		// Edit buttons
 		initButtons(tableColumnEdit, 15, Icons.PEN_SOLID, "grayIcon", (department, event) -> {
 			createDepartmentDialogForm(department, "/gui/DepartmentForm.fxml", Utils.currentStage(event));
 		});
-		
 		// Delete buttons
 		initButtons(tableColumnDelete, 15, Icons.TRASH_SOLID, "redIcon", (department, event) -> {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Deletar departamento");
-			alert.setHeaderText("Id: " + department.getId() + " - " + department.getName());
-			alert.setContentText("Tem certeza que deseja deletar?");
-			Optional<ButtonType> result = alert.showAndWait();
-			
-			if (result.get() == ButtonType.OK){
-				try {
-					departmentService.delete(department);
-					onDataChanged();
-				} catch(DbException e) {
-					throw new DbException("Cannot delete department");
-				}
-			}
-			
+			removeEntity(department);
 		});
-		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewDepartments.prefHeightProperty().bind(stage.heightProperty());
 	}
@@ -190,6 +173,23 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			dialogStage.showAndWait();
 		} catch (IOException e) {
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		}
+	}
+	
+	private void removeEntity(Department entity) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Deletar departamento");
+		alert.setHeaderText("Id: " + entity.getId() + " - " + entity.getName());
+		alert.setContentText("Tem certeza que deseja deletar?");
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == ButtonType.OK) {
+			try {
+				departmentService.delete(entity);
+				onDataChanged();
+			} catch (DbException e) {
+				Alerts.showAlert("DbException", "Erro ao deletar", e.getMessage(), AlertType.ERROR);
+			}
 		}
 	}
 

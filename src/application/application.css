@@ -68,3 +68,12 @@
     -fx-max-height: 30;
     -fx-max-width: 30;
 }
+
+.table-row-cell:selected {
+    -fx-background-color: #edf2f4;
+    -fx-table-cell-border-color: #E3E3E3;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: black ;
+}
