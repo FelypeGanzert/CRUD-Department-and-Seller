@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.beans.property.SimpleObjectProperty;
@@ -29,7 +30,7 @@ import model.entites.Department;
 import model.services.DepartmentService;
 import model.services.SellerService;
 
-public class DepartmentListController implements Initializable{
+public class DepartmentListController implements Initializable, DataChangeListener{
 
 	@FXML private VBox mainVBox;
 	@FXML private Button btnNewDepartment;
@@ -76,6 +77,7 @@ public class DepartmentListController implements Initializable{
 			throw new IllegalStateException("Seller service not initialized");
 		}
 		List<Department> list = departmentService.findAdll();
+		list.sort((p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()));
 		departmentObsList = FXCollections.observableArrayList(list);
 		tableViewDepartments.setItems(departmentObsList);
 	}
@@ -94,7 +96,8 @@ public class DepartmentListController implements Initializable{
 			DepartmentFormController controller = loader.getController();
 			controller.setDepartmentEntity(obj);
 			controller.setDepartmentService(new DepartmentService());
-			controller.updateFormData();
+			controller.subscribeDataChangeListener(this);
+			controller.updateFormData();			
 			
 			Scene departmentFormScene = new Scene(anchorPane);
 			departmentFormScene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
@@ -104,6 +107,11 @@ public class DepartmentListController implements Initializable{
 		} catch (IOException e) {
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
+	}
+
+	@Override
+	public void onDataChanged() {
+		updateTableView();
 	}
 
 }

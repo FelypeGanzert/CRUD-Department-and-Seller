@@ -1,11 +1,14 @@
 package gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
 import db.DbException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -23,21 +26,16 @@ import model.services.DepartmentService;
 
 public class DepartmentFormController implements Initializable {
 
-	@FXML
-	private HBox containerId;
-	@FXML
-	private Label IdLabel;
-	@FXML
-	private TextField nameTextField;
-	@FXML
-	private Button btnSave;
-	@FXML
-	private Button btnCancel;
-	@FXML
-	private Label ErrorLabel;
+	@FXML private HBox containerId;
+	@FXML private Label IdLabel;
+	@FXML private TextField nameTextField;
+	@FXML private Button btnSave;
+	@FXML private Button btnCancel;
+	@FXML private Label ErrorLabel;
 
 	private Department entity;
 	private DepartmentService service;
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -92,6 +90,7 @@ public class DepartmentFormController implements Initializable {
 			entity = getFormData();
 			service.saveOrUpdate(entity);
 			Utils.currentStage(event).close();
+			notifyDataChangeListeners();
 		} catch (DbException e) {
 			Alerts.showAlert("DbException", "Erro ao salvar as informações", e.getMessage(), AlertType.ERROR);
 		} catch (ValidationException e) {
@@ -111,5 +110,15 @@ public class DepartmentFormController implements Initializable {
 
 	public void handleCancelBtn(ActionEvent event) {
 		Utils.currentStage(event).close();
+	}
+	
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+	}
+	
+	private void notifyDataChangeListeners() {
+		for (DataChangeListener listener : dataChangeListeners) {
+			listener.onDataChanged();
+		}
 	}
 }
