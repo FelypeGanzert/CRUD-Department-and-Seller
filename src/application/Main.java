@@ -24,6 +24,8 @@ public class Main extends Application {
 			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(mainScene);
 			primaryStage.setTitle("Vendedores");
+			primaryStage.setMinWidth(400);
+			primaryStage.setMinHeight(350);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

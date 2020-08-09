@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import application.Main;
 import gui.util.Alerts;
+import gui.util.Utils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +15,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -49,25 +49,7 @@ public class DepartmentListController implements Initializable{
 	}
 	
 	public void handleNewDepartment(ActionEvent event) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/DepartmentForm.fxml"));
-			AnchorPane anchorPane = loader.load();
-			
-			Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			Stage departmentFormStage = new Stage();
-			departmentFormStage.setTitle("Cadastrar departamento");
-			departmentFormStage.initModality(Modality.WINDOW_MODAL);
-			departmentFormStage.initOwner(currentStage);
-			
-			Scene departmentFormScene = new Scene(anchorPane);
-			departmentFormScene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
-			departmentFormStage.setScene(departmentFormScene);
-			departmentFormStage.setResizable(false);
-			departmentFormStage.show();
-			
-		} catch (IOException e) {
-			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
-		}
+		createDepartmentDialogForm(new Department(), "/gui/DepartmentForm.fxml", Utils.currentStage(event));
 	}
 		
 	private void initializeNodes() {
@@ -96,6 +78,32 @@ public class DepartmentListController implements Initializable{
 		List<Department> list = departmentService.findAdll();
 		departmentObsList = FXCollections.observableArrayList(list);
 		tableViewDepartments.setItems(departmentObsList);
+	}
+	
+	private void createDepartmentDialogForm(Department obj, String absolutePath, Stage parentStage) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absolutePath));
+			AnchorPane anchorPane = loader.load();
+			
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Informações do Departamento");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(parentStage);
+			dialogStage.setResizable(false);
+			
+			DepartmentFormController controller = loader.getController();
+			controller.setDepartmentEntity(obj);
+			controller.setDepartmentService(new DepartmentService());
+			controller.updateFormData();
+			
+			Scene departmentFormScene = new Scene(anchorPane);
+			departmentFormScene.getStylesheets().add(getClass().getResource("/application/application.css").toExternalForm());
+			dialogStage.setScene(departmentFormScene);
+			
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+		}
 	}
 
 }
