@@ -63,7 +63,7 @@
                   <Font size="17.0" />
                </font>
             </Button>
-            <Button fx:id="btnCancel" alignment="TOP_CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Cancelar" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Button fx:id="btnCancel" alignment="TOP_CENTER" cancelButton="true" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCancelBtn" style="-fx-background-color: transparent;" text="Cancelar" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <styleClass>
                   <String fx:value="btn-cancel" />
                   <String fx:value="btn" />
