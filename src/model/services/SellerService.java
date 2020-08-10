@@ -15,9 +15,20 @@ public class SellerService {
 		return dao.findAll();
 	}
 	
-	public Integer quantityByDepartment(Department department) {
-		List<Seller> list = dao.findByDepartment(department);
-		return list.size();
+	public List<Seller> findByDepartment(Department department) {
+		return dao.findByDepartment(department);
+	}
+
+	public void saveOrUpdate(Seller seller) {
+		if(seller.getId() == null) {
+			dao.insert(seller);
+		} else {
+			dao.update(seller);
+		}
+	}
+	
+	public void delete(Seller seller) {
+		dao.deleteById(seller.getId());
 	}
 	
 }

@@ -28,8 +28,12 @@ public class MainViewController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 	}
 	
-	public void onMenuItemSellerAction() {
-		System.out.println("Seller menu");
+	public void onMenuItemSellerAction(ActionEvent event) {
+		loadView("/gui/SellerList.fxml", (SellerListController controller) -> {
+			controller.setSellerService(new SellerService());
+			controller.updateTableView();
+		});	
+		Main.getPrimaryStage().setMinWidth(800);
 	}
 	
 	public void onMenuItemDepartmentAction(ActionEvent event) {
@@ -38,10 +42,12 @@ public class MainViewController implements Initializable {
 			controller.setSellerService(new SellerService());
 			controller.updateTableView();
 		});	
+		Main.getPrimaryStage().setMinWidth(450);
 	}
 	
 	public void onMenuAboutAction() {	
 		loadView("/gui/AboutView.fxml", x -> {});
+		Main.getPrimaryStage().setMinWidth(400);
 	}
 	
 	private synchronized <T> void loadView(String absolutePath, Consumer<T> initializingAction) {
@@ -61,9 +67,9 @@ public class MainViewController implements Initializable {
 			
 		} catch (IOException e) {
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
 		} catch(IllegalStateException e) {
 			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
-			
 		}
 		
 	}

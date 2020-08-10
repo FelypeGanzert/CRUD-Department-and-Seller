@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	
 	private static Scene mainScene;
+	private static Stage primaryStage;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -27,6 +28,7 @@ public class Main extends Application {
 			primaryStage.setMinWidth(400);
 			primaryStage.setMinHeight(350);
 			primaryStage.show();
+			Main.primaryStage = primaryStage;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -34,6 +36,10 @@ public class Main extends Application {
 	
 	public static Scene getMainScene() {
 		return mainScene;
+	}
+	
+	public static Stage getPrimaryStage() {
+		return primaryStage;
 	}
 	
 	public static void main(String[] args) {

@@ -77,3 +77,8 @@
 .table-row-cell:selected .text {
     -fx-fill: black ;
 }
+
+.table-column-center-left{
+	-fx-alignment: CENTER_LEFT;
+	-fx-padding: 2px 5px;
+}

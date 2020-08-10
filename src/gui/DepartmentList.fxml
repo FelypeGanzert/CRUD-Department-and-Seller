@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -15,32 +16,38 @@
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <Label text="Departamentos">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #fff;">
-        <items>
-          <Button fx:id="btnNewDepartment" mnemonicParsing="false" onAction="#handleNewDepartment" style="-fx-background-color: #2196f3;" styleClass="btn" text="Novo" textFill="WHITE">
+      <HBox alignment="CENTER_LEFT" spacing="30.0">
+         <children>
+            <Label text="Departamentos">
                <font>
-                  <Font size="13.0" />
-               </font></Button>
-            <Button fx:id="btnListSellers" mnemonicParsing="false" text="Listar Vendedores" textFill="WHITE">
-               <styleClass>
-                  <String fx:value="btn" />
-                  <String fx:value="btn-confirm" />
-               </styleClass>
-               <font>
-                  <Font size="13.0" />
-               </font></Button>
-        </items>
-      </ToolBar>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <ToolBar prefHeight="40.0" style="-fx-background-color: #fff;">
+              <items>
+                <Button fx:id="btnNewDepartment" mnemonicParsing="false" onAction="#handleNewDepartment" style="-fx-background-color: #2196f3;" styleClass="btn" text="Novo" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnListSellers" mnemonicParsing="false" text="Listar Vendedores" textFill="WHITE">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btn-confirm" />
+                     </styleClass>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+              </items>
+            </ToolBar>
+         </children>
+      </HBox>
       <TableView fx:id="tableViewDepartments" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="tableColumnId" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" style="-fx-alignment: CENTER_LEFT; -fx-padding: 2px 5px;" text="ID" />
-          <TableColumn fx:id="tableColumnNome" minWidth="30.0" prefWidth="130.0" style="-fx-padding: 2px 5px; -fx-alignment: CENTER_LEFT;" text="Nome" />
-          <TableColumn fx:id="tableColumnVendedores" prefWidth="105.0" style="-fx-alignment: CENTER_RIGHT; -fx-padding: 2px 10px;" text="Vendedores" />
+          <TableColumn fx:id="tableColumnNome" minWidth="130.0" prefWidth="130.0" style="-fx-padding: 2px 5px; -fx-alignment: CENTER_LEFT;" text="Nome" />
+          <TableColumn fx:id="tableColumnVendedores" minWidth="105.0" prefWidth="105.0" style="-fx-alignment: CENTER_RIGHT; -fx-padding: 2px 10px;" text="Vendedores" />
             <TableColumn fx:id="tableColumnEdit" maxWidth="-1.0" prefWidth="-1.0" resizable="false" style="-fx-alignment: CENTER; -fx-padding: 2px 2px;" />
             <TableColumn fx:id="tableColumnDelete" maxWidth="-1.0" prefWidth="-1.0" resizable="false" style="-fx-alignment: CENTER; -fx-padding: 2px 2px;" />
         </columns>
