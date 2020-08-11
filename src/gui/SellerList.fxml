@@ -2,9 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -15,11 +18,16 @@
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <HBox alignment="CENTER_LEFT" spacing="30.0">
+      <HBox alignment="CENTER_LEFT" spacing="20.0">
          <children>
             <Label text="Vendedores">
                <font>
                   <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblSellerTotal" text="0" textFill="#333333">
+               <font>
+                  <Font size="13.0" />
                </font>
             </Label>
             <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #fff;">
@@ -33,12 +41,41 @@
             </ToolBar>
          </children>
       </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label text="Filtrar por nome">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtNameFilter" minWidth="270.0" prefWidth="270.0" style="-fx-padding: 5px 10px;">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <CheckBox fx:id="checkBoxExactNameFilter" mnemonicParsing="false" text="Pesquisa exata">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label text="Filtrar por departamento">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="comboBoxDepartmentFilter" minWidth="220.0" prefWidth="220.0" style="-fx-padding: 5px 10px;" />
+         </children>
+      </HBox>
       <TableView fx:id="tableViewSellers" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="tableColumnId" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" styleClass="table-column-center-left" text="ID" />
+            <TableColumn fx:id="tableColumnId" maxWidth="300.0" minWidth="60.0" prefWidth="-1.0" styleClass="table-column-center-left" text="ID" />
             <TableColumn fx:id="tableColumnNome" minWidth="130.0" prefWidth="130.0" styleClass="table-column-center-left" text="Nome" />
             <TableColumn fx:id="tableColumnEmail" minWidth="140.0" prefWidth="140.0" styleClass="table-column-center-left" text="Email" />
-            <TableColumn fx:id="tableColumnBirthDate" minWidth="100.0" prefWidth="100.0" styleClass="table-column-center-left" text="Nascimento" />
+            <TableColumn fx:id="tableColumnBirthDate" minWidth="80.0" styleClass="table-column-center-left" text="Nascimento" />
             <TableColumn fx:id="tableColumnBaseSalary" minWidth="120.0" prefWidth="120.0" style="-fx-alignment: CENTER_RIGHT;" styleClass="table-column-center-left" text="Salário Base" />
             <TableColumn fx:id="tableColumnDepartmentName" minWidth="110.0" prefWidth="110.0" styleClass="table-column-center-left" text="Departamento" />
             <TableColumn fx:id="tableColumnEdit" maxWidth="-1.0" prefWidth="-1.0" resizable="false" style="-fx-alignment: CENTER; -fx-padding: 2px 2px;" />

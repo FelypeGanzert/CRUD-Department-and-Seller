@@ -2,17 +2,21 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import application.Main;
 import db.DbException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import gui.util.Utils;
+import icons.Icons;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -26,22 +30,32 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import model.entites.Department;
 import model.entites.Seller;
+import model.services.DepartmentService;
 import model.services.SellerService;
-import svgIcons.Icons;
 
 public class SellerListController implements Initializable, DataChangeListener{
 
 	@FXML private VBox mainVBox;
 	@FXML private Button btnNewSeller;
+	@FXML private Label lblSellerTotal;
+	@FXML private TextField txtNameFilter;
+	@FXML private CheckBox checkBoxExactNameFilter;
+	@FXML private ComboBox<Department> comboBoxDepartmentFilter;
 	@FXML private TableView<Seller> tableViewSellers;
 	@FXML private TableColumn<Seller, Integer> tableColumnId;
 	@FXML private TableColumn<Seller, String> tableColumnNome;
@@ -54,11 +68,72 @@ public class SellerListController implements Initializable, DataChangeListener{
 	@FXML private TableColumn<Seller, Seller> tableColumnDelete;
 	
 	private SellerService sellerService;
+	private DepartmentService departmentService;
 	private ObservableList<Seller> sellerObsList;
+	private ObservableList<Department> departmentObsList;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initializeNodes();
+		Constraints.setTextFieldMaxLength(txtNameFilter, 40);
+		txtNameFilter.textProperty().addListener((observable, oldValue, newValue) -> {
+			filterSellers();
+		});
+		checkBoxExactNameFilter.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			filterSellers();
+		});
+		comboBoxDepartmentFilter.valueProperty().addListener((observable, oldValue, newValue) -> {
+			filterSellers();
+		});
+		
+	}
+	
+	private void filterSellers() {
+		List<Seller> filteredList;
+		String value = txtNameFilter.getText();
+		boolean exact = checkBoxExactNameFilter.isSelected();
+		Department department = comboBoxDepartmentFilter.getValue();
+		if(exact) {
+			filteredList = sellerObsList.stream()
+					.filter(seller -> seller.getName().toUpperCase().startsWith(value.toUpperCase()))
+					.collect(Collectors.toList());
+		} else {
+			filteredList = sellerObsList.stream()
+					.filter(seller -> seller.getName().toUpperCase().contains(value.toUpperCase()))
+					.collect(Collectors.toList());
+		}
+		if(department != null && department.getId() != null) {
+			filteredList = filteredList.stream()
+					.filter(seler -> seler.getDepartment().equals(department))
+					.collect(Collectors.toList());
+		}
+		ObservableList<Seller> filteredObsList =  FXCollections.observableArrayList(filteredList);
+		tableViewSellers.setItems(filteredObsList);
+		tableViewSellers.refresh();
+	}
+	
+	public void setDepartmentsToComboBoxFilter(Department selectedDepartment) {
+		if(this.departmentService == null) {
+			throw new IllegalStateException("DepartmentService is null to add to comboBox");
+		}
+		List<Department> list = new ArrayList<>();
+		list.add(new Department(null, null));
+		list.addAll(departmentService.findAdll());
+		departmentObsList = FXCollections.observableArrayList(list);
+		comboBoxDepartmentFilter.setItems(departmentObsList);
+		comboBoxDepartmentFilter.setConverter(new StringConverter<Department>() {
+			@Override
+			public String toString(Department object) {
+				return object.getName();
+			}
+			@Override
+			public Department fromString(String string) {
+				return null;
+			}
+		});
+		if(selectedDepartment != null) {
+			comboBoxDepartmentFilter.setValue(selectedDepartment);
+		}
 	}
 	
 	public void handleNewSeller(ActionEvent event) {
@@ -113,6 +188,10 @@ public class SellerListController implements Initializable, DataChangeListener{
 		this.sellerService = sellerService;
 	}
 	
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+	
 	public void updateTableView() {
 		if(sellerService == null) {
 			throw new IllegalStateException("Seller service not initialized");
@@ -122,6 +201,7 @@ public class SellerListController implements Initializable, DataChangeListener{
 		sellerObsList = FXCollections.observableArrayList(list);
 		tableViewSellers.setItems(sellerObsList);
 		tableViewSellers.refresh();
+		lblSellerTotal.setText("(Total de: " + Utils.pointSeparator(sellerObsList.size()) + ")");
 	}
 	
 	private void createSellerDialogForm(Seller obj, String absolutePath, Stage parentStage) {
@@ -171,6 +251,7 @@ public class SellerListController implements Initializable, DataChangeListener{
 	@Override
 	public void onDataChanged() {
 		updateTableView();
+		filterSellers();
 	}
 
 }

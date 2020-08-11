@@ -32,6 +32,8 @@ public class MainViewController implements Initializable {
 		loadView("/gui/SellerList.fxml", (SellerListController controller) -> {
 			controller.setSellerService(new SellerService());
 			controller.updateTableView();
+			controller.setDepartmentService(new DepartmentService());
+			controller.setDepartmentsToComboBoxFilter(null);
 		});	
 		Main.getPrimaryStage().setMinWidth(800);
 	}
@@ -42,7 +44,7 @@ public class MainViewController implements Initializable {
 			controller.setSellerService(new SellerService());
 			controller.updateTableView();
 		});	
-		Main.getPrimaryStage().setMinWidth(450);
+		Main.getPrimaryStage().setMinWidth(550);
 	}
 	
 	public void onMenuAboutAction() {	
@@ -64,14 +66,11 @@ public class MainViewController implements Initializable {
 			
 			T controller = loader.getController();
 			initializingAction.accept(controller);
-			
 		} catch (IOException e) {
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 			e.printStackTrace();
 		} catch(IllegalStateException e) {
 			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
-		
 	}
-
 }

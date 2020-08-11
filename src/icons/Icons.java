@@ -1,4 +1,4 @@
-package svgIcons;
+package icons;
 
 public class Icons {
 	// Icons from FontAwesome

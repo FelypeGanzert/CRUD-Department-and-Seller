@@ -10,11 +10,11 @@ public class DepartmentService {
 	
 	private DepartmentDao dao = DaoFactory.createDepartmentDao();
 
-	public List<Department> findAdll(){
+	public synchronized List<Department> findAdll(){
 		return dao.findAll();
 	}
 	
-	public void saveOrUpdate(Department department) {
+	public synchronized void saveOrUpdate(Department department) {
 		if(department.getId() == null) {
 			dao.insert(department);
 		} else {
@@ -22,7 +22,7 @@ public class DepartmentService {
 		}
 	}
 	
-	public void delete(Department department) {
+	public synchronized void delete(Department department) {
 		dao.deleteById(department.getId());
 	}
 	

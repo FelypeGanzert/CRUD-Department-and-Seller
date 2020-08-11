@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import application.Main;
 import db.DbException;
@@ -13,6 +14,7 @@ import db.DbIntegrityException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
+import icons.Icons;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -26,6 +28,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -37,11 +40,11 @@ import javafx.stage.Stage;
 import model.entites.Department;
 import model.services.DepartmentService;
 import model.services.SellerService;
-import svgIcons.Icons;
 
 public class DepartmentListController implements Initializable, DataChangeListener{
 
 	@FXML private VBox mainVBox;
+	@FXML private Label lblDepartmentTotal;
 	@FXML private Button btnNewDepartment;
 	@FXML private Button btnListSellers;
 	@FXML private TableView<Department> tableViewDepartments;
@@ -63,6 +66,16 @@ public class DepartmentListController implements Initializable, DataChangeListen
 	public void handleNewDepartment(ActionEvent event) {
 		createDepartmentDialogForm(new Department(), "/gui/DepartmentForm.fxml", Utils.currentStage(event));
 	}
+	
+	public void handleListSellers(ActionEvent event) {
+		loadView("/gui/SellerList.fxml", (SellerListController controller) -> {
+			controller.setSellerService(new SellerService());
+			controller.updateTableView();
+			controller.setDepartmentService(new DepartmentService());
+			controller.setDepartmentsToComboBoxFilter(tableViewDepartments.getSelectionModel().getSelectedItem());
+		});	
+		Main.getPrimaryStage().setMinWidth(800);
+	}
 		
 	private void initializeNodes() {
 		tableColumnNome.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -76,6 +89,17 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		initButtons(tableColumnDelete, 15, Icons.TRASH_SOLID, "redIcon", (department, event) -> {
 			removeEntity(department);
 		});
+		// Listener to selected department
+		tableViewDepartments.getSelectionModel().selectedItemProperty().addListener(
+	            (observable, oldSelection, newSelection) -> {
+	            	if(newSelection != null) {
+	            		btnListSellers.setText("Vendedores de [ID=" + newSelection.getId() + "] " +newSelection.getName());
+	            		btnListSellers.setDisable(false);
+	            	} else {
+	            		btnListSellers.setDisable(true);
+	            	}
+	            }
+	    );
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewDepartments.prefHeightProperty().bind(stage.heightProperty());
 	}
@@ -102,9 +126,6 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			}
 		});
 	}
-	
-	
-	
 
 	public void setDepartmentService(DepartmentService departmentService) {
 		this.departmentService = departmentService;
@@ -126,6 +147,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		departmentObsList = FXCollections.observableArrayList(list);
 		tableViewDepartments.setItems(departmentObsList);
 		tableViewDepartments.refresh();
+		lblDepartmentTotal.setText("(Total de: " + Utils.pointSeparator(departmentObsList.size()) + ")");
 	}
 	
 	private void createDepartmentDialogForm(Department obj, String absolutePath, Stage parentStage) {
@@ -171,6 +193,28 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			} catch (DbException e) {
 				Alerts.showAlert("DbException", "Erro ao deletar", e.getMessage(), AlertType.ERROR);
 			}
+		}
+	}
+	
+	private synchronized <T> void loadView(String absolutePath, Consumer<T> initializingAction) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absolutePath));
+			VBox newVBox = loader.load();
+			
+			Scene mainScene = Main.getMainScene();
+			VBox vBoxMainScene = (VBox) mainScene.lookup("#paneInfos");
+			
+			vBoxMainScene.getChildren().clear();
+			vBoxMainScene.getChildren().addAll(newVBox);
+			vBoxMainScene.setStyle(newVBox.getStyle());
+			
+			T controller = loader.getController();
+			initializingAction.accept(controller);
+		} catch (IOException e) {
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		} catch(IllegalStateException e) {
+			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
 	}
 

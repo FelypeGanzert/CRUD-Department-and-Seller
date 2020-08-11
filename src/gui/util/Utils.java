@@ -2,6 +2,7 @@ package gui.util;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -24,6 +25,14 @@ public class Utils {
 	private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRAZIL);
 	public static final DecimalFormat DINHEIRO_REAL = new DecimalFormat("¤ ###,###,##0.00", REAL);
 
+	public static String pointSeparator(Integer value) {
+		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+		DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+		symbols.setGroupingSeparator('.');
+		formatter.setDecimalFormatSymbols(symbols);
+		return formatter.format(value);
+	}
+	
 	public static Stage currentStage(ActionEvent event) {
 		return (Stage) ((Node) event.getSource()).getScene().getWindow();
 	}
