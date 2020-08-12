@@ -1,8 +1,10 @@
 package gui;
 
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -17,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -29,9 +32,16 @@ public class SellerFormController implements Initializable {
 	@FXML private HBox containerId;
 	@FXML private Label IdLabel;
 	@FXML private TextField nameTextField;
+	@FXML private TextField emailTextField;
+	@FXML private DatePicker birthDateDatePicker;
+	@FXML private TextField baseSalaryTextField;
 	@FXML private Button btnSave;
 	@FXML private Button btnCancel;
-	@FXML private Label ErrorLabel;
+	
+	@FXML private Label labelErrorName;
+	@FXML private Label labelErrorEmail;
+	@FXML private Label labelErrorBirthDate;
+	@FXML private Label labelErrorBaseSalary;
 
 	private Seller entity;
 	private SellerService service;
@@ -43,7 +53,10 @@ public class SellerFormController implements Initializable {
 	}
 
 	private void initilizeNodes() {
-		Constraints.setTextFieldMaxLength(nameTextField, 40);
+		Constraints.setTextFieldMaxLength(nameTextField, 70);
+		Constraints.setTextFieldDouble(baseSalaryTextField);
+		Constraints.setTextFieldMaxLength(emailTextField, 60);
+		Utils.formatDatePicker(birthDateDatePicker, "dd/MM/yyyy");
 	}
 
 	public void setSellerEntity(Seller entity) {
@@ -63,6 +76,12 @@ public class SellerFormController implements Initializable {
 		}
 		IdLabel.setText(String.valueOf(entity.getId()));
 		nameTextField.setText(entity.getName());
+		emailTextField.setText(entity.getEmail());
+		Locale.setDefault(new Locale("pt-BR"));
+		baseSalaryTextField.setText(String.format("%.2f", entity.getBaseSalary()).replace(".", ","));
+		if(entity.getBirthDate() != null) {
+			birthDateDatePicker.setValue(entity.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		}
 	}
 
 	private Seller getFormData() {
@@ -105,9 +124,9 @@ public class SellerFormController implements Initializable {
 		Set<String> fieldsName = errors.keySet();
 
 		if (fieldsName.contains("name")) {
-			ErrorLabel.setVisible(true);
+			labelErrorName.setVisible(true);
 			nameTextField.setStyle("-fx-border-width:  0px 0px 1px 0px; -fx-border-color: red;");
-			ErrorLabel.setText(errors.get("name"));
+			labelErrorName.setText(errors.get("name"));
 		}
 	}
 

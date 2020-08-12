@@ -68,7 +68,6 @@ public class MainViewController implements Initializable {
 			initializingAction.accept(controller);
 		} catch (IOException e) {
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
-			e.printStackTrace();
 		} catch(IllegalStateException e) {
 			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}

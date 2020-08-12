@@ -228,6 +228,7 @@ public class SellerListController implements Initializable, DataChangeListener{
 			dialogStage.showAndWait();
 		} catch (IOException e) {
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
 		}
 	}
 	

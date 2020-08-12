@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -12,10 +14,12 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class Utils {
 
@@ -32,7 +36,7 @@ public class Utils {
 		formatter.setDecimalFormatSymbols(symbols);
 		return formatter.format(value);
 	}
-	
+
 	public static Stage currentStage(ActionEvent event) {
 		return (Stage) ((Node) event.getSource()).getScene().getWindow();
 	}
@@ -101,8 +105,36 @@ public class Utils {
 		});
 	}
 
-	public static String mascaraDinheiro(double valor, DecimalFormat moeda){  
-		return moeda.format(valor);  
+	public static void formatDatePicker(DatePicker datePicker, String format) {
+		datePicker.setConverter(new StringConverter<LocalDate>() {
+
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(format);
+			{
+				datePicker.setPromptText(format.toLowerCase());
+			}
+
+			@Override
+			public String toString(LocalDate date) {
+				if (date != null) {
+					return dateFormatter.format(date);
+				} else {
+					return "";
+				}
+			}
+
+			@Override
+			public LocalDate fromString(String string) {
+				if (string != null && !string.isEmpty()) {
+					return LocalDate.parse(string, dateFormatter);
+				} else {
+					return null;
+				}
+			}
+		});
+	}
+
+	public static String mascaraDinheiro(double valor, DecimalFormat moeda) {
+		return moeda.format(valor);
 	}
 
 }
