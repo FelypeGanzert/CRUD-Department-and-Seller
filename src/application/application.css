@@ -1,3 +1,7 @@
+.border-error {
+	-fx-border-width:  0px 0px 1px 0px; -fx-border-color: red;
+}
+
 .btn{
 	-fx-background-radius: 20px;
 	-fx-border-radius: 20px;

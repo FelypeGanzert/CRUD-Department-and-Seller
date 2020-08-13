@@ -2,7 +2,6 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +41,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.entites.Department;
 import model.entites.Seller;
 import model.services.DepartmentService;
@@ -113,27 +111,8 @@ public class SellerListController implements Initializable, DataChangeListener{
 	}
 	
 	public void setDepartmentsToComboBoxFilter(Department selectedDepartment) {
-		if(this.departmentService == null) {
-			throw new IllegalStateException("DepartmentService is null to add to comboBox");
-		}
-		List<Department> list = new ArrayList<>();
-		list.add(new Department(null, null));
-		list.addAll(departmentService.findAdll());
-		departmentObsList = FXCollections.observableArrayList(list);
-		comboBoxDepartmentFilter.setItems(departmentObsList);
-		comboBoxDepartmentFilter.setConverter(new StringConverter<Department>() {
-			@Override
-			public String toString(Department object) {
-				return object.getName();
-			}
-			@Override
-			public Department fromString(String string) {
-				return null;
-			}
-		});
-		if(selectedDepartment != null) {
-			comboBoxDepartmentFilter.setValue(selectedDepartment);
-		}
+		Utils.setDepartmentsToComboBox(comboBoxDepartmentFilter, selectedDepartment,
+				departmentService, departmentObsList);
 	}
 	
 	public void handleNewSeller(ActionEvent event) {
@@ -217,6 +196,7 @@ public class SellerListController implements Initializable, DataChangeListener{
 			
 			SellerFormController controller = loader.getController();
 			controller.setSellerEntity(obj);
+			controller.setDepartmentService(new DepartmentService());
 			controller.setSellerService(new SellerService());
 			controller.subscribeDataChangeListener(this);
 			controller.updateFormData();
@@ -227,8 +207,8 @@ public class SellerListController implements Initializable, DataChangeListener{
 			
 			dialogStage.showAndWait();
 		} catch (IOException e) {
-			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 			e.printStackTrace();
+			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
 	}
 	
@@ -244,6 +224,7 @@ public class SellerListController implements Initializable, DataChangeListener{
 			sellerService.delete(entity);
 				onDataChanged();
 			} catch (DbException e) {
+				e.printStackTrace();
 				Alerts.showAlert("DbException", "Erro ao deletar", e.getMessage(), AlertType.ERROR);
 			}
 		}

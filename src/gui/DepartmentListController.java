@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 
 import application.Main;
 import db.DbException;
-import db.DbIntegrityException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -173,6 +172,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			
 			dialogStage.showAndWait();
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
 	}
@@ -188,9 +188,8 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			try {
 				departmentService.delete(entity);
 				onDataChanged();
-			} catch(DbIntegrityException e) {
-				Alerts.showAlert("IntegrityException", "Erro ao deletar - Existem vendedores nesse departamento", e.getMessage(), AlertType.ERROR);
 			} catch (DbException e) {
+				e.printStackTrace();
 				Alerts.showAlert("DbException", "Erro ao deletar", e.getMessage(), AlertType.ERROR);
 			}
 		}
@@ -211,9 +210,11 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			T controller = loader.getController();
 			initializingAction.accept(controller);
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IOException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 			e.printStackTrace();
 		} catch(IllegalStateException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IllegalStateException", "Erro ao exibir tela", e.getMessage(), AlertType.ERROR);
 		}
 	}

@@ -6,20 +6,27 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import model.entites.Department;
+import model.services.DepartmentService;
 
 public class Utils {
 
@@ -44,6 +51,14 @@ public class Utils {
 	public static Integer tryParseToInt(String value) {
 		try {
 			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
+	
+	public static Double tryParseToDouble(String value) {
+		try {
+			return Double.parseDouble(value);
 		} catch (NumberFormatException e) {
 			return null;
 		}
@@ -135,6 +150,31 @@ public class Utils {
 
 	public static String mascaraDinheiro(double valor, DecimalFormat moeda) {
 		return moeda.format(valor);
+	}
+	
+	public static void setDepartmentsToComboBox(ComboBox<Department> comboBox, Department selectedDepartment,
+			DepartmentService departmentService, ObservableList<Department> departmentObsList) {
+		if(departmentService == null) {
+			throw new IllegalStateException("DepartmentService is null to add to comboBox");
+		}
+		List<Department> list = new ArrayList<>();
+		list.add(new Department(null, null));
+		list.addAll(departmentService.findAdll());
+		departmentObsList = FXCollections.observableArrayList(list);
+		comboBox.setItems(departmentObsList);
+		comboBox.setConverter(new StringConverter<Department>() {
+			@Override
+			public String toString(Department object) {
+				return object.getName();
+			}
+			@Override
+			public Department fromString(String string) {
+				return null;
+			}
+		});
+		if(selectedDepartment != null) {
+			comboBox.setValue(selectedDepartment);
+		}
 	}
 
 }
