@@ -18,7 +18,7 @@ Para editar o projeto são necessárias as bibliotecas:
 Window -> Preferences -> Java -> Build Path -> User Libraries -> e então criei uma com o nome "MySQL Connector" e adicionei os jars externos e uma outra com o nome "JavaFX".
 
 ### Banco de Dados MySQL ###
-Script para a criação inicial da estrutura das tabelas:
+Script para a criação inicial da estrutura das tabelas (foram criadas no banco **coursejdbc**):
 
 ```
 DROP TABLE IF EXISTS `department`;
