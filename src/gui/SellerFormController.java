@@ -90,7 +90,7 @@ public class SellerFormController implements Initializable {
 	}
 
 	public void updateFormData() {
-		setDepartmentToComboBox(null);
+		setDepartmentToComboBox(new Department());
 		if (entity == null) {
 			throw new IllegalStateException("Entidade seller null");
 		}

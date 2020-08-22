@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
+import model.entites.Department;
 import model.services.DepartmentService;
 import model.services.SellerService;
 
@@ -33,7 +34,7 @@ public class MainViewController implements Initializable {
 			controller.setSellerService(new SellerService());
 			controller.updateTableView();
 			controller.setDepartmentService(new DepartmentService());
-			controller.setDepartmentsToComboBoxFilter(null);
+			controller.setDepartmentsToComboBoxFilter(new Department());
 		});	
 		Main.getPrimaryStage().setMinWidth(800);
 	}

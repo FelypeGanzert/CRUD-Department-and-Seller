@@ -48,10 +48,6 @@ Diagrama do banco de dados:
 
 Para ser possível rodar a aplicação e ela conseguir se conectar é necessário ter instalado o MySQL e alterar o **user**, **password** e o **dburl** contidos no arquivo **db.properties** de acordo com a sua máquina e suas configurações.
 
-- - - -
-
-## Simplesmente Executar ##
-Se você está interessando somente em executar a aplicação, basta baixar toda a pasta **dist** e executar o arquivo **CRUD-Sellers.jar**. Porém ainda é necessário o que foi mencionado acima sobre o banco de dados.
 
 - - - - 
 
